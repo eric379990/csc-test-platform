@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.ApiRequestParamMapper">
+  <resultMap id="BaseResultMap" type="com.csc.test.platform.model.ApiRequestParam">
+    <id column="paramID" jdbcType="INTEGER" property="paramid" />
+    <result column="paramName" jdbcType="VARCHAR" property="paramname" />
+    <result column="paramKey" jdbcType="VARCHAR" property="paramkey" />
+    <result column="paramType" jdbcType="TINYINT" property="paramtype" />
+    <result column="paramLimit" jdbcType="VARCHAR" property="paramlimit" />
+    <result column="apiID" jdbcType="INTEGER" property="apiid" />
+    <result column="paramNotNull" jdbcType="TINYINT" property="paramnotnull" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.csc.test.platform.model.ApiRequestParam">
+    <result column="paramValue" jdbcType="LONGVARCHAR" property="paramvalue" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    paramID, paramName, paramKey, paramType, paramLimit, apiID, paramNotNull
+  </sql>
+  <sql id="Blob_Column_List">
+    paramValue
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.csc.test.platform.model.ApiRequestParamExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_api_request_param
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.csc.test.platform.model.ApiRequestParamExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from eo_api_request_param
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_api_request_param
+    where paramID = #{paramid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eo_api_request_param
+    where paramID = #{paramid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.csc.test.platform.model.ApiRequestParamExample">
+    delete from eo_api_request_param
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.csc.test.platform.model.ApiRequestParam">
+    insert into eo_api_request_param (paramID, paramName, paramKey, 
+      paramType, paramLimit, apiID, 
+      paramNotNull, paramValue)
+    values (#{paramid,jdbcType=INTEGER}, #{paramname,jdbcType=VARCHAR}, #{paramkey,jdbcType=VARCHAR}, 
+      #{paramtype,jdbcType=TINYINT}, #{paramlimit,jdbcType=VARCHAR}, #{apiid,jdbcType=INTEGER}, 
+      #{paramnotnull,jdbcType=TINYINT}, #{paramvalue,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csc.test.platform.model.ApiRequestParam">
+    insert into eo_api_request_param
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paramid != null">
+        paramID,
+      </if>
+      <if test="paramname != null">
+        paramName,
+      </if>
+      <if test="paramkey != null">
+        paramKey,
+      </if>
+      <if test="paramtype != null">
+        paramType,
+      </if>
+      <if test="paramlimit != null">
+        paramLimit,
+      </if>
+      <if test="apiid != null">
+        apiID,
+      </if>
+      <if test="paramnotnull != null">
+        paramNotNull,
+      </if>
+      <if test="paramvalue != null">
+        paramValue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paramid != null">
+        #{paramid,jdbcType=INTEGER},
+      </if>
+      <if test="paramname != null">
+        #{paramname,jdbcType=VARCHAR},
+      </if>
+      <if test="paramkey != null">
+        #{paramkey,jdbcType=VARCHAR},
+      </if>
+      <if test="paramtype != null">
+        #{paramtype,jdbcType=TINYINT},
+      </if>
+      <if test="paramlimit != null">
+        #{paramlimit,jdbcType=VARCHAR},
+      </if>
+      <if test="apiid != null">
+        #{apiid,jdbcType=INTEGER},
+      </if>
+      <if test="paramnotnull != null">
+        #{paramnotnull,jdbcType=TINYINT},
+      </if>
+      <if test="paramvalue != null">
+        #{paramvalue,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.csc.test.platform.model.ApiRequestParamExample" resultType="java.lang.Long">
+    select count(*) from eo_api_request_param
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update eo_api_request_param
+    <set>
+      <if test="record.paramid != null">
+        paramID = #{record.paramid,jdbcType=INTEGER},
+      </if>
+      <if test="record.paramname != null">
+        paramName = #{record.paramname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramkey != null">
+        paramKey = #{record.paramkey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramtype != null">
+        paramType = #{record.paramtype,jdbcType=TINYINT},
+      </if>
+      <if test="record.paramlimit != null">
+        paramLimit = #{record.paramlimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apiid != null">
+        apiID = #{record.apiid,jdbcType=INTEGER},
+      </if>
+      <if test="record.paramnotnull != null">
+        paramNotNull = #{record.paramnotnull,jdbcType=TINYINT},
+      </if>
+      <if test="record.paramvalue != null">
+        paramValue = #{record.paramvalue,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update eo_api_request_param
+    set paramID = #{record.paramid,jdbcType=INTEGER},
+      paramName = #{record.paramname,jdbcType=VARCHAR},
+      paramKey = #{record.paramkey,jdbcType=VARCHAR},
+      paramType = #{record.paramtype,jdbcType=TINYINT},
+      paramLimit = #{record.paramlimit,jdbcType=VARCHAR},
+      apiID = #{record.apiid,jdbcType=INTEGER},
+      paramNotNull = #{record.paramnotnull,jdbcType=TINYINT},
+      paramValue = #{record.paramvalue,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update eo_api_request_param
+    set paramID = #{record.paramid,jdbcType=INTEGER},
+      paramName = #{record.paramname,jdbcType=VARCHAR},
+      paramKey = #{record.paramkey,jdbcType=VARCHAR},
+      paramType = #{record.paramtype,jdbcType=TINYINT},
+      paramLimit = #{record.paramlimit,jdbcType=VARCHAR},
+      apiID = #{record.apiid,jdbcType=INTEGER},
+      paramNotNull = #{record.paramnotnull,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csc.test.platform.model.ApiRequestParam">
+    update eo_api_request_param
+    <set>
+      <if test="paramname != null">
+        paramName = #{paramname,jdbcType=VARCHAR},
+      </if>
+      <if test="paramkey != null">
+        paramKey = #{paramkey,jdbcType=VARCHAR},
+      </if>
+      <if test="paramtype != null">
+        paramType = #{paramtype,jdbcType=TINYINT},
+      </if>
+      <if test="paramlimit != null">
+        paramLimit = #{paramlimit,jdbcType=VARCHAR},
+      </if>
+      <if test="apiid != null">
+        apiID = #{apiid,jdbcType=INTEGER},
+      </if>
+      <if test="paramnotnull != null">
+        paramNotNull = #{paramnotnull,jdbcType=TINYINT},
+      </if>
+      <if test="paramvalue != null">
+        paramValue = #{paramvalue,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where paramID = #{paramid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csc.test.platform.model.ApiRequestParam">
+    update eo_api_request_param
+    set paramName = #{paramname,jdbcType=VARCHAR},
+      paramKey = #{paramkey,jdbcType=VARCHAR},
+      paramType = #{paramtype,jdbcType=TINYINT},
+      paramLimit = #{paramlimit,jdbcType=VARCHAR},
+      apiID = #{apiid,jdbcType=INTEGER},
+      paramNotNull = #{paramnotnull,jdbcType=TINYINT},
+      paramValue = #{paramvalue,jdbcType=LONGVARCHAR}
+    where paramID = #{paramid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csc.test.platform.model.ApiRequestParam">
+    update eo_api_request_param
+    set paramName = #{paramname,jdbcType=VARCHAR},
+      paramKey = #{paramkey,jdbcType=VARCHAR},
+      paramType = #{paramtype,jdbcType=TINYINT},
+      paramLimit = #{paramlimit,jdbcType=VARCHAR},
+      apiID = #{apiid,jdbcType=INTEGER},
+      paramNotNull = #{paramnotnull,jdbcType=TINYINT}
+    where paramID = #{paramid,jdbcType=INTEGER}
+  </update>
+</mapper>

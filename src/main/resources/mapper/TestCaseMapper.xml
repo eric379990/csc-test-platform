@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.TestCaseMapper">
+  <resultMap id="BaseResultMap" type="com.csc.test.platform.model.TestCase">
+    <id column="caseID" jdbcType="INTEGER" property="caseid" />
+    <id column="projectID" jdbcType="INTEGER" property="projectid" />
+    <id column="userID" jdbcType="INTEGER" property="userid" />
+    <result column="caseName" jdbcType="VARCHAR" property="casename" />
+    <result column="caseDesc" jdbcType="VARCHAR" property="casedesc" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="groupID" jdbcType="INTEGER" property="groupid" />
+    <result column="caseType" jdbcType="TINYINT" property="casetype" />
+    <result column="apiID" jdbcType="INTEGER" property="apiid" />
+    <result column="sqlID" jdbcType="INTEGER" property="sqlid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.csc.test.platform.model.TestCase">
+    <result column="caseCode" jdbcType="LONGVARCHAR" property="casecode" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    caseID, projectID, userID, caseName, caseDesc, createTime, updateTime, groupID, caseType, 
+    apiID, sqlID
+  </sql>
+  <sql id="Blob_Column_List">
+    caseCode
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.csc.test.platform.model.TestCaseExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_project_test_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.csc.test.platform.model.TestCaseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from eo_project_test_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.csc.test.platform.model.TestCaseKey" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_project_test_case
+    where caseID = #{caseid,jdbcType=INTEGER}
+      and projectID = #{projectid,jdbcType=INTEGER}
+      and userID = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.csc.test.platform.model.TestCaseKey">
+    delete from eo_project_test_case
+    where caseID = #{caseid,jdbcType=INTEGER}
+      and projectID = #{projectid,jdbcType=INTEGER}
+      and userID = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.csc.test.platform.model.TestCaseExample">
+    delete from eo_project_test_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.csc.test.platform.model.TestCase">
+    insert into eo_project_test_case (caseID, projectID, userID, 
+      caseName, caseDesc, createTime, 
+      updateTime, groupID, caseType, 
+      apiID, sqlID, caseCode
+      )
+    values (#{caseid,jdbcType=INTEGER}, #{projectid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{casename,jdbcType=VARCHAR}, #{casedesc,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{groupid,jdbcType=INTEGER}, #{casetype,jdbcType=TINYINT}, 
+      #{apiid,jdbcType=INTEGER}, #{sqlid,jdbcType=INTEGER}, #{casecode,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.csc.test.platform.model.TestCase">
+    insert into eo_project_test_case
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="caseid != null">
+        caseID,
+      </if>
+      <if test="projectid != null">
+        projectID,
+      </if>
+      <if test="userid != null">
+        userID,
+      </if>
+      <if test="casename != null">
+        caseName,
+      </if>
+      <if test="casedesc != null">
+        caseDesc,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="groupid != null">
+        groupID,
+      </if>
+      <if test="casetype != null">
+        caseType,
+      </if>
+      <if test="apiid != null">
+        apiID,
+      </if>
+      <if test="sqlid != null">
+        sqlID,
+      </if>
+      <if test="casecode != null">
+        caseCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="caseid != null">
+        #{caseid,jdbcType=INTEGER},
+      </if>
+      <if test="projectid != null">
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="casename != null">
+        #{casename,jdbcType=VARCHAR},
+      </if>
+      <if test="casedesc != null">
+        #{casedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupid != null">
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="casetype != null">
+        #{casetype,jdbcType=TINYINT},
+      </if>
+      <if test="apiid != null">
+        #{apiid,jdbcType=INTEGER},
+      </if>
+      <if test="sqlid != null">
+        #{sqlid,jdbcType=INTEGER},
+      </if>
+      <if test="casecode != null">
+        #{casecode,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.csc.test.platform.model.TestCaseExample" resultType="java.lang.Long">
+    select count(*) from eo_project_test_case
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update eo_project_test_case
+    <set>
+      <if test="record.caseid != null">
+        caseID = #{record.caseid,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectid != null">
+        projectID = #{record.projectid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null">
+        userID = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.casename != null">
+        caseName = #{record.casename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.casedesc != null">
+        caseDesc = #{record.casedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null">
+        updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.groupid != null">
+        groupID = #{record.groupid,jdbcType=INTEGER},
+      </if>
+      <if test="record.casetype != null">
+        caseType = #{record.casetype,jdbcType=TINYINT},
+      </if>
+      <if test="record.apiid != null">
+        apiID = #{record.apiid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sqlid != null">
+        sqlID = #{record.sqlid,jdbcType=INTEGER},
+      </if>
+      <if test="record.casecode != null">
+        caseCode = #{record.casecode,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update eo_project_test_case
+    set caseID = #{record.caseid,jdbcType=INTEGER},
+      projectID = #{record.projectid,jdbcType=INTEGER},
+      userID = #{record.userid,jdbcType=INTEGER},
+      caseName = #{record.casename,jdbcType=VARCHAR},
+      caseDesc = #{record.casedesc,jdbcType=VARCHAR},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      groupID = #{record.groupid,jdbcType=INTEGER},
+      caseType = #{record.casetype,jdbcType=TINYINT},
+      apiID = #{record.apiid,jdbcType=INTEGER},
+      sqlID = #{record.sqlid,jdbcType=INTEGER},
+      caseCode = #{record.casecode,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update eo_project_test_case
+    set caseID = #{record.caseid,jdbcType=INTEGER},
+      projectID = #{record.projectid,jdbcType=INTEGER},
+      userID = #{record.userid,jdbcType=INTEGER},
+      caseName = #{record.casename,jdbcType=VARCHAR},
+      caseDesc = #{record.casedesc,jdbcType=VARCHAR},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      groupID = #{record.groupid,jdbcType=INTEGER},
+      caseType = #{record.casetype,jdbcType=TINYINT},
+      apiID = #{record.apiid,jdbcType=INTEGER},
+      sqlID = #{record.sqlid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csc.test.platform.model.TestCase">
+    update eo_project_test_case
+    <set>
+      <if test="casename != null">
+        caseName = #{casename,jdbcType=VARCHAR},
+      </if>
+      <if test="casedesc != null">
+        caseDesc = #{casedesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupid != null">
+        groupID = #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="casetype != null">
+        caseType = #{casetype,jdbcType=TINYINT},
+      </if>
+      <if test="apiid != null">
+        apiID = #{apiid,jdbcType=INTEGER},
+      </if>
+      <if test="sqlid != null">
+        sqlID = #{sqlid,jdbcType=INTEGER},
+      </if>
+      <if test="casecode != null">
+        caseCode = #{casecode,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where caseID = #{caseid,jdbcType=INTEGER}
+      and projectID = #{projectid,jdbcType=INTEGER}
+      and userID = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csc.test.platform.model.TestCase">
+    update eo_project_test_case
+    set caseName = #{casename,jdbcType=VARCHAR},
+      caseDesc = #{casedesc,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      groupID = #{groupid,jdbcType=INTEGER},
+      caseType = #{casetype,jdbcType=TINYINT},
+      apiID = #{apiid,jdbcType=INTEGER},
+      sqlID = #{sqlid,jdbcType=INTEGER},
+      caseCode = #{casecode,jdbcType=LONGVARCHAR}
+    where caseID = #{caseid,jdbcType=INTEGER}
+      and projectID = #{projectid,jdbcType=INTEGER}
+      and userID = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csc.test.platform.model.TestCase">
+    update eo_project_test_case
+    set caseName = #{casename,jdbcType=VARCHAR},
+      caseDesc = #{casedesc,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      groupID = #{groupid,jdbcType=INTEGER},
+      caseType = #{casetype,jdbcType=TINYINT},
+      apiID = #{apiid,jdbcType=INTEGER},
+      sqlID = #{sqlid,jdbcType=INTEGER}
+    where caseID = #{caseid,jdbcType=INTEGER}
+      and projectID = #{projectid,jdbcType=INTEGER}
+      and userID = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

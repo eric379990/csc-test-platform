@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.ApiMapper">
+  <resultMap id="BaseResultMap" type="com.csc.test.platform.model.Api">
+    <id column="apiID" jdbcType="INTEGER" property="apiid" />
+    <id column="groupID" jdbcType="INTEGER" property="groupid" />
+    <id column="apiURI" jdbcType="VARCHAR" property="apiuri" />
+    <result column="apiName" jdbcType="VARCHAR" property="apiname" />
+    <result column="apiProtocol" jdbcType="TINYINT" property="apiprotocol" />
+    <result column="apiRequestType" jdbcType="TINYINT" property="apirequesttype" />
+    <result column="apiSuccessMockType" jdbcType="TINYINT" property="apisuccessmocktype" />
+    <result column="apiFailureMockType" jdbcType="TINYINT" property="apifailuremocktype" />
+    <result column="apiStatus" jdbcType="TINYINT" property="apistatus" />
+    <result column="apiUpdateTime" jdbcType="TIMESTAMP" property="apiupdatetime" />
+    <result column="projectID" jdbcType="INTEGER" property="projectid" />
+    <result column="starred" jdbcType="TINYINT" property="starred" />
+    <result column="removed" jdbcType="TINYINT" property="removed" />
+    <result column="removeTime" jdbcType="TIMESTAMP" property="removetime" />
+    <result column="apiNoteType" jdbcType="TINYINT" property="apinotetype" />
+    <result column="apiRequestParamType" jdbcType="TINYINT" property="apirequestparamtype" />
+    <result column="updateUserID" jdbcType="INTEGER" property="updateuserid" />
+    <result column="apiSuccessStatusCode" jdbcType="VARCHAR" property="apisuccessstatuscode" />
+    <result column="apiFailureStatusCode" jdbcType="VARCHAR" property="apifailurestatuscode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.csc.test.platform.model.ApiWithBLOBs">
+    <result column="apiFailureMock" jdbcType="LONGVARCHAR" property="apifailuremock" />
+    <result column="apiSuccessMock" jdbcType="LONGVARCHAR" property="apisuccessmock" />
+    <result column="apiNoteRaw" jdbcType="LONGVARCHAR" property="apinoteraw" />
+    <result column="apiNote" jdbcType="LONGVARCHAR" property="apinote" />
+    <result column="apiRequestRaw" jdbcType="LONGVARCHAR" property="apirequestraw" />
+    <result column="mockRule" jdbcType="LONGVARCHAR" property="mockrule" />
+    <result column="mockResult" jdbcType="LONGVARCHAR" property="mockresult" />
+    <result column="mockConfig" jdbcType="LONGVARCHAR" property="mockconfig" />
+    <result column="beforeInject" jdbcType="LONGVARCHAR" property="beforeinject" />
+    <result column="afterInject" jdbcType="LONGVARCHAR" property="afterinject" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    apiID, groupID, apiURI, apiName, apiProtocol, apiRequestType, apiSuccessMockType, 
+    apiFailureMockType, apiStatus, apiUpdateTime, projectID, starred, removed, removeTime, 
+    apiNoteType, apiRequestParamType, updateUserID, apiSuccessStatusCode, apiFailureStatusCode
+  </sql>
+  <sql id="Blob_Column_List">
+    apiFailureMock, apiSuccessMock, apiNoteRaw, apiNote, apiRequestRaw, mockRule, mockResult, 
+    mockConfig, beforeInject, afterInject
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.csc.test.platform.model.ApiExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_api
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.csc.test.platform.model.ApiExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from eo_api
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.csc.test.platform.model.ApiKey" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_api
+    where apiID = #{apiid,jdbcType=INTEGER}
+      and groupID = #{groupid,jdbcType=INTEGER}
+      and apiURI = #{apiuri,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.csc.test.platform.model.ApiKey">
+    delete from eo_api
+    where apiID = #{apiid,jdbcType=INTEGER}
+      and groupID = #{groupid,jdbcType=INTEGER}
+      and apiURI = #{apiuri,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.csc.test.platform.model.ApiExample">
+    delete from eo_api
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.csc.test.platform.model.ApiWithBLOBs">
+    insert into eo_api (apiID, groupID, apiURI, 
+      apiName, apiProtocol, apiRequestType, 
+      apiSuccessMockType, apiFailureMockType, 
+      apiStatus, apiUpdateTime, projectID, 
+      starred, removed, removeTime, 
+      apiNoteType, apiRequestParamType, updateUserID, 
+      apiSuccessStatusCode, apiFailureStatusCode, 
+      apiFailureMock, apiSuccessMock, 
+      apiNoteRaw, apiNote, apiRequestRaw, 
+      mockRule, mockResult, mockConfig, 
+      beforeInject, afterInject)
+    values (#{apiid,jdbcType=INTEGER}, #{groupid,jdbcType=INTEGER}, #{apiuri,jdbcType=VARCHAR}, 
+      #{apiname,jdbcType=VARCHAR}, #{apiprotocol,jdbcType=TINYINT}, #{apirequesttype,jdbcType=TINYINT}, 
+      #{apisuccessmocktype,jdbcType=TINYINT}, #{apifailuremocktype,jdbcType=TINYINT}, 
+      #{apistatus,jdbcType=TINYINT}, #{apiupdatetime,jdbcType=TIMESTAMP}, #{projectid,jdbcType=INTEGER}, 
+      #{starred,jdbcType=TINYINT}, #{removed,jdbcType=TINYINT}, #{removetime,jdbcType=TIMESTAMP}, 
+      #{apinotetype,jdbcType=TINYINT}, #{apirequestparamtype,jdbcType=TINYINT}, #{updateuserid,jdbcType=INTEGER}, 
+      #{apisuccessstatuscode,jdbcType=VARCHAR}, #{apifailurestatuscode,jdbcType=VARCHAR}, 
+      #{apifailuremock,jdbcType=LONGVARCHAR}, #{apisuccessmock,jdbcType=LONGVARCHAR}, 
+      #{apinoteraw,jdbcType=LONGVARCHAR}, #{apinote,jdbcType=LONGVARCHAR}, #{apirequestraw,jdbcType=LONGVARCHAR}, 
+      #{mockrule,jdbcType=LONGVARCHAR}, #{mockresult,jdbcType=LONGVARCHAR}, #{mockconfig,jdbcType=LONGVARCHAR}, 
+      #{beforeinject,jdbcType=LONGVARCHAR}, #{afterinject,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csc.test.platform.model.ApiWithBLOBs">
+    insert into eo_api
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="apiid != null">
+        apiID,
+      </if>
+      <if test="groupid != null">
+        groupID,
+      </if>
+      <if test="apiuri != null">
+        apiURI,
+      </if>
+      <if test="apiname != null">
+        apiName,
+      </if>
+      <if test="apiprotocol != null">
+        apiProtocol,
+      </if>
+      <if test="apirequesttype != null">
+        apiRequestType,
+      </if>
+      <if test="apisuccessmocktype != null">
+        apiSuccessMockType,
+      </if>
+      <if test="apifailuremocktype != null">
+        apiFailureMockType,
+      </if>
+      <if test="apistatus != null">
+        apiStatus,
+      </if>
+      <if test="apiupdatetime != null">
+        apiUpdateTime,
+      </if>
+      <if test="projectid != null">
+        projectID,
+      </if>
+      <if test="starred != null">
+        starred,
+      </if>
+      <if test="removed != null">
+        removed,
+      </if>
+      <if test="removetime != null">
+        removeTime,
+      </if>
+      <if test="apinotetype != null">
+        apiNoteType,
+      </if>
+      <if test="apirequestparamtype != null">
+        apiRequestParamType,
+      </if>
+      <if test="updateuserid != null">
+        updateUserID,
+      </if>
+      <if test="apisuccessstatuscode != null">
+        apiSuccessStatusCode,
+      </if>
+      <if test="apifailurestatuscode != null">
+        apiFailureStatusCode,
+      </if>
+      <if test="apifailuremock != null">
+        apiFailureMock,
+      </if>
+      <if test="apisuccessmock != null">
+        apiSuccessMock,
+      </if>
+      <if test="apinoteraw != null">
+        apiNoteRaw,
+      </if>
+      <if test="apinote != null">
+        apiNote,
+      </if>
+      <if test="apirequestraw != null">
+        apiRequestRaw,
+      </if>
+      <if test="mockrule != null">
+        mockRule,
+      </if>
+      <if test="mockresult != null">
+        mockResult,
+      </if>
+      <if test="mockconfig != null">
+        mockConfig,
+      </if>
+      <if test="beforeinject != null">
+        beforeInject,
+      </if>
+      <if test="afterinject != null">
+        afterInject,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="apiid != null">
+        #{apiid,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null">
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="apiuri != null">
+        #{apiuri,jdbcType=VARCHAR},
+      </if>
+      <if test="apiname != null">
+        #{apiname,jdbcType=VARCHAR},
+      </if>
+      <if test="apiprotocol != null">
+        #{apiprotocol,jdbcType=TINYINT},
+      </if>
+      <if test="apirequesttype != null">
+        #{apirequesttype,jdbcType=TINYINT},
+      </if>
+      <if test="apisuccessmocktype != null">
+        #{apisuccessmocktype,jdbcType=TINYINT},
+      </if>
+      <if test="apifailuremocktype != null">
+        #{apifailuremocktype,jdbcType=TINYINT},
+      </if>
+      <if test="apistatus != null">
+        #{apistatus,jdbcType=TINYINT},
+      </if>
+      <if test="apiupdatetime != null">
+        #{apiupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectid != null">
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="starred != null">
+        #{starred,jdbcType=TINYINT},
+      </if>
+      <if test="removed != null">
+        #{removed,jdbcType=TINYINT},
+      </if>
+      <if test="removetime != null">
+        #{removetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="apinotetype != null">
+        #{apinotetype,jdbcType=TINYINT},
+      </if>
+      <if test="apirequestparamtype != null">
+        #{apirequestparamtype,jdbcType=TINYINT},
+      </if>
+      <if test="updateuserid != null">
+        #{updateuserid,jdbcType=INTEGER},
+      </if>
+      <if test="apisuccessstatuscode != null">
+        #{apisuccessstatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="apifailurestatuscode != null">
+        #{apifailurestatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="apifailuremock != null">
+        #{apifailuremock,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apisuccessmock != null">
+        #{apisuccessmock,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apinoteraw != null">
+        #{apinoteraw,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apinote != null">
+        #{apinote,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apirequestraw != null">
+        #{apirequestraw,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mockrule != null">
+        #{mockrule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mockresult != null">
+        #{mockresult,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mockconfig != null">
+        #{mockconfig,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="beforeinject != null">
+        #{beforeinject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="afterinject != null">
+        #{afterinject,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.csc.test.platform.model.ApiExample" resultType="java.lang.Long">
+    select count(*) from eo_api
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update eo_api
+    <set>
+      <if test="record.apiid != null">
+        apiID = #{record.apiid,jdbcType=INTEGER},
+      </if>
+      <if test="record.groupid != null">
+        groupID = #{record.groupid,jdbcType=INTEGER},
+      </if>
+      <if test="record.apiuri != null">
+        apiURI = #{record.apiuri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apiname != null">
+        apiName = #{record.apiname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apiprotocol != null">
+        apiProtocol = #{record.apiprotocol,jdbcType=TINYINT},
+      </if>
+      <if test="record.apirequesttype != null">
+        apiRequestType = #{record.apirequesttype,jdbcType=TINYINT},
+      </if>
+      <if test="record.apisuccessmocktype != null">
+        apiSuccessMockType = #{record.apisuccessmocktype,jdbcType=TINYINT},
+      </if>
+      <if test="record.apifailuremocktype != null">
+        apiFailureMockType = #{record.apifailuremocktype,jdbcType=TINYINT},
+      </if>
+      <if test="record.apistatus != null">
+        apiStatus = #{record.apistatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.apiupdatetime != null">
+        apiUpdateTime = #{record.apiupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.projectid != null">
+        projectID = #{record.projectid,jdbcType=INTEGER},
+      </if>
+      <if test="record.starred != null">
+        starred = #{record.starred,jdbcType=TINYINT},
+      </if>
+      <if test="record.removed != null">
+        removed = #{record.removed,jdbcType=TINYINT},
+      </if>
+      <if test="record.removetime != null">
+        removeTime = #{record.removetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.apinotetype != null">
+        apiNoteType = #{record.apinotetype,jdbcType=TINYINT},
+      </if>
+      <if test="record.apirequestparamtype != null">
+        apiRequestParamType = #{record.apirequestparamtype,jdbcType=TINYINT},
+      </if>
+      <if test="record.updateuserid != null">
+        updateUserID = #{record.updateuserid,jdbcType=INTEGER},
+      </if>
+      <if test="record.apisuccessstatuscode != null">
+        apiSuccessStatusCode = #{record.apisuccessstatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apifailurestatuscode != null">
+        apiFailureStatusCode = #{record.apifailurestatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apifailuremock != null">
+        apiFailureMock = #{record.apifailuremock,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.apisuccessmock != null">
+        apiSuccessMock = #{record.apisuccessmock,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.apinoteraw != null">
+        apiNoteRaw = #{record.apinoteraw,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.apinote != null">
+        apiNote = #{record.apinote,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.apirequestraw != null">
+        apiRequestRaw = #{record.apirequestraw,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.mockrule != null">
+        mockRule = #{record.mockrule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.mockresult != null">
+        mockResult = #{record.mockresult,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.mockconfig != null">
+        mockConfig = #{record.mockconfig,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.beforeinject != null">
+        beforeInject = #{record.beforeinject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.afterinject != null">
+        afterInject = #{record.afterinject,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update eo_api
+    set apiID = #{record.apiid,jdbcType=INTEGER},
+      groupID = #{record.groupid,jdbcType=INTEGER},
+      apiURI = #{record.apiuri,jdbcType=VARCHAR},
+      apiName = #{record.apiname,jdbcType=VARCHAR},
+      apiProtocol = #{record.apiprotocol,jdbcType=TINYINT},
+      apiRequestType = #{record.apirequesttype,jdbcType=TINYINT},
+      apiSuccessMockType = #{record.apisuccessmocktype,jdbcType=TINYINT},
+      apiFailureMockType = #{record.apifailuremocktype,jdbcType=TINYINT},
+      apiStatus = #{record.apistatus,jdbcType=TINYINT},
+      apiUpdateTime = #{record.apiupdatetime,jdbcType=TIMESTAMP},
+      projectID = #{record.projectid,jdbcType=INTEGER},
+      starred = #{record.starred,jdbcType=TINYINT},
+      removed = #{record.removed,jdbcType=TINYINT},
+      removeTime = #{record.removetime,jdbcType=TIMESTAMP},
+      apiNoteType = #{record.apinotetype,jdbcType=TINYINT},
+      apiRequestParamType = #{record.apirequestparamtype,jdbcType=TINYINT},
+      updateUserID = #{record.updateuserid,jdbcType=INTEGER},
+      apiSuccessStatusCode = #{record.apisuccessstatuscode,jdbcType=VARCHAR},
+      apiFailureStatusCode = #{record.apifailurestatuscode,jdbcType=VARCHAR},
+      apiFailureMock = #{record.apifailuremock,jdbcType=LONGVARCHAR},
+      apiSuccessMock = #{record.apisuccessmock,jdbcType=LONGVARCHAR},
+      apiNoteRaw = #{record.apinoteraw,jdbcType=LONGVARCHAR},
+      apiNote = #{record.apinote,jdbcType=LONGVARCHAR},
+      apiRequestRaw = #{record.apirequestraw,jdbcType=LONGVARCHAR},
+      mockRule = #{record.mockrule,jdbcType=LONGVARCHAR},
+      mockResult = #{record.mockresult,jdbcType=LONGVARCHAR},
+      mockConfig = #{record.mockconfig,jdbcType=LONGVARCHAR},
+      beforeInject = #{record.beforeinject,jdbcType=LONGVARCHAR},
+      afterInject = #{record.afterinject,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update eo_api
+    set apiID = #{record.apiid,jdbcType=INTEGER},
+      groupID = #{record.groupid,jdbcType=INTEGER},
+      apiURI = #{record.apiuri,jdbcType=VARCHAR},
+      apiName = #{record.apiname,jdbcType=VARCHAR},
+      apiProtocol = #{record.apiprotocol,jdbcType=TINYINT},
+      apiRequestType = #{record.apirequesttype,jdbcType=TINYINT},
+      apiSuccessMockType = #{record.apisuccessmocktype,jdbcType=TINYINT},
+      apiFailureMockType = #{record.apifailuremocktype,jdbcType=TINYINT},
+      apiStatus = #{record.apistatus,jdbcType=TINYINT},
+      apiUpdateTime = #{record.apiupdatetime,jdbcType=TIMESTAMP},
+      projectID = #{record.projectid,jdbcType=INTEGER},
+      starred = #{record.starred,jdbcType=TINYINT},
+      removed = #{record.removed,jdbcType=TINYINT},
+      removeTime = #{record.removetime,jdbcType=TIMESTAMP},
+      apiNoteType = #{record.apinotetype,jdbcType=TINYINT},
+      apiRequestParamType = #{record.apirequestparamtype,jdbcType=TINYINT},
+      updateUserID = #{record.updateuserid,jdbcType=INTEGER},
+      apiSuccessStatusCode = #{record.apisuccessstatuscode,jdbcType=VARCHAR},
+      apiFailureStatusCode = #{record.apifailurestatuscode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csc.test.platform.model.ApiWithBLOBs">
+    update eo_api
+    <set>
+      <if test="apiname != null">
+        apiName = #{apiname,jdbcType=VARCHAR},
+      </if>
+      <if test="apiprotocol != null">
+        apiProtocol = #{apiprotocol,jdbcType=TINYINT},
+      </if>
+      <if test="apirequesttype != null">
+        apiRequestType = #{apirequesttype,jdbcType=TINYINT},
+      </if>
+      <if test="apisuccessmocktype != null">
+        apiSuccessMockType = #{apisuccessmocktype,jdbcType=TINYINT},
+      </if>
+      <if test="apifailuremocktype != null">
+        apiFailureMockType = #{apifailuremocktype,jdbcType=TINYINT},
+      </if>
+      <if test="apistatus != null">
+        apiStatus = #{apistatus,jdbcType=TINYINT},
+      </if>
+      <if test="apiupdatetime != null">
+        apiUpdateTime = #{apiupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectid != null">
+        projectID = #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="starred != null">
+        starred = #{starred,jdbcType=TINYINT},
+      </if>
+      <if test="removed != null">
+        removed = #{removed,jdbcType=TINYINT},
+      </if>
+      <if test="removetime != null">
+        removeTime = #{removetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="apinotetype != null">
+        apiNoteType = #{apinotetype,jdbcType=TINYINT},
+      </if>
+      <if test="apirequestparamtype != null">
+        apiRequestParamType = #{apirequestparamtype,jdbcType=TINYINT},
+      </if>
+      <if test="updateuserid != null">
+        updateUserID = #{updateuserid,jdbcType=INTEGER},
+      </if>
+      <if test="apisuccessstatuscode != null">
+        apiSuccessStatusCode = #{apisuccessstatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="apifailurestatuscode != null">
+        apiFailureStatusCode = #{apifailurestatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="apifailuremock != null">
+        apiFailureMock = #{apifailuremock,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apisuccessmock != null">
+        apiSuccessMock = #{apisuccessmock,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apinoteraw != null">
+        apiNoteRaw = #{apinoteraw,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apinote != null">
+        apiNote = #{apinote,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="apirequestraw != null">
+        apiRequestRaw = #{apirequestraw,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mockrule != null">
+        mockRule = #{mockrule,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mockresult != null">
+        mockResult = #{mockresult,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mockconfig != null">
+        mockConfig = #{mockconfig,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="beforeinject != null">
+        beforeInject = #{beforeinject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="afterinject != null">
+        afterInject = #{afterinject,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where apiID = #{apiid,jdbcType=INTEGER}
+      and groupID = #{groupid,jdbcType=INTEGER}
+      and apiURI = #{apiuri,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csc.test.platform.model.ApiWithBLOBs">
+    update eo_api
+    set apiName = #{apiname,jdbcType=VARCHAR},
+      apiProtocol = #{apiprotocol,jdbcType=TINYINT},
+      apiRequestType = #{apirequesttype,jdbcType=TINYINT},
+      apiSuccessMockType = #{apisuccessmocktype,jdbcType=TINYINT},
+      apiFailureMockType = #{apifailuremocktype,jdbcType=TINYINT},
+      apiStatus = #{apistatus,jdbcType=TINYINT},
+      apiUpdateTime = #{apiupdatetime,jdbcType=TIMESTAMP},
+      projectID = #{projectid,jdbcType=INTEGER},
+      starred = #{starred,jdbcType=TINYINT},
+      removed = #{removed,jdbcType=TINYINT},
+      removeTime = #{removetime,jdbcType=TIMESTAMP},
+      apiNoteType = #{apinotetype,jdbcType=TINYINT},
+      apiRequestParamType = #{apirequestparamtype,jdbcType=TINYINT},
+      updateUserID = #{updateuserid,jdbcType=INTEGER},
+      apiSuccessStatusCode = #{apisuccessstatuscode,jdbcType=VARCHAR},
+      apiFailureStatusCode = #{apifailurestatuscode,jdbcType=VARCHAR},
+      apiFailureMock = #{apifailuremock,jdbcType=LONGVARCHAR},
+      apiSuccessMock = #{apisuccessmock,jdbcType=LONGVARCHAR},
+      apiNoteRaw = #{apinoteraw,jdbcType=LONGVARCHAR},
+      apiNote = #{apinote,jdbcType=LONGVARCHAR},
+      apiRequestRaw = #{apirequestraw,jdbcType=LONGVARCHAR},
+      mockRule = #{mockrule,jdbcType=LONGVARCHAR},
+      mockResult = #{mockresult,jdbcType=LONGVARCHAR},
+      mockConfig = #{mockconfig,jdbcType=LONGVARCHAR},
+      beforeInject = #{beforeinject,jdbcType=LONGVARCHAR},
+      afterInject = #{afterinject,jdbcType=LONGVARCHAR}
+    where apiID = #{apiid,jdbcType=INTEGER}
+      and groupID = #{groupid,jdbcType=INTEGER}
+      and apiURI = #{apiuri,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csc.test.platform.model.Api">
+    update eo_api
+    set apiName = #{apiname,jdbcType=VARCHAR},
+      apiProtocol = #{apiprotocol,jdbcType=TINYINT},
+      apiRequestType = #{apirequesttype,jdbcType=TINYINT},
+      apiSuccessMockType = #{apisuccessmocktype,jdbcType=TINYINT},
+      apiFailureMockType = #{apifailuremocktype,jdbcType=TINYINT},
+      apiStatus = #{apistatus,jdbcType=TINYINT},
+      apiUpdateTime = #{apiupdatetime,jdbcType=TIMESTAMP},
+      projectID = #{projectid,jdbcType=INTEGER},
+      starred = #{starred,jdbcType=TINYINT},
+      removed = #{removed,jdbcType=TINYINT},
+      removeTime = #{removetime,jdbcType=TIMESTAMP},
+      apiNoteType = #{apinotetype,jdbcType=TINYINT},
+      apiRequestParamType = #{apirequestparamtype,jdbcType=TINYINT},
+      updateUserID = #{updateuserid,jdbcType=INTEGER},
+      apiSuccessStatusCode = #{apisuccessstatuscode,jdbcType=VARCHAR},
+      apiFailureStatusCode = #{apifailurestatuscode,jdbcType=VARCHAR}
+    where apiID = #{apiid,jdbcType=INTEGER}
+      and groupID = #{groupid,jdbcType=INTEGER}
+      and apiURI = #{apiuri,jdbcType=VARCHAR}
+  </update>
+</mapper>

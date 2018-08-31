@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.CustomMapper">
+  <resultMap id="apiResultMap" type="com.csc.test.platform.model.Api">
+    <id column="apiID" jdbcType="INTEGER" property="apiid" />
+    <id column="groupID" jdbcType="INTEGER" property="groupid" />
+    <id column="apiURI" jdbcType="VARCHAR" property="apiuri" />
+    <result column="apiName" jdbcType="VARCHAR" property="apiname" />
+    <result column="apiProtocol" jdbcType="TINYINT" property="apiprotocol" />
+    <result column="apiRequestType" jdbcType="TINYINT" property="apirequesttype" />
+    <result column="apiSuccessMockType" jdbcType="TINYINT" property="apisuccessmocktype" />
+    <result column="apiFailureMockType" jdbcType="TINYINT" property="apifailuremocktype" />
+    <result column="apiStatus" jdbcType="TINYINT" property="apistatus" />
+    <result column="apiUpdateTime" jdbcType="TIMESTAMP" property="apiupdatetime" />
+    <result column="projectID" jdbcType="INTEGER" property="projectid" />
+    <result column="starred" jdbcType="TINYINT" property="starred" />
+    <result column="removed" jdbcType="TINYINT" property="removed" />
+    <result column="removeTime" jdbcType="TIMESTAMP" property="removetime" />
+    <result column="apiNoteType" jdbcType="TINYINT" property="apinotetype" />
+    <result column="apiRequestParamType" jdbcType="TINYINT" property="apirequestparamtype" />
+    <result column="updateUserID" jdbcType="INTEGER" property="updateuserid" />
+    <result column="apiSuccessStatusCode" jdbcType="VARCHAR" property="apisuccessstatuscode" />
+    <result column="apiFailureStatusCode" jdbcType="VARCHAR" property="apifailurestatuscode" />
+  </resultMap>
+  <resultMap id="envResultMap" type="com.csc.test.platform.model.ApiEnv">
+    <id column="envID" jdbcType="INTEGER" property="envid" />
+    <id column="projectID" jdbcType="INTEGER" property="projectid" />
+    <result column="envName" jdbcType="VARCHAR" property="envname" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="port" jdbcType="CHAR" property="port" />
+  </resultMap>
+  <select id="selectApiInfoByApiId" parameterType="Integer" resultMap="apiResultMap">
+    select * from eo_api where apiID =#{apiid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectTestCaseDataByApiId" parameterType="Integer" resultType="java.util.HashMap">
+    select p.paramKey, v.value, v.rowNo from eo_api_request_param as p LEFT JOIN 
+    eo_api_request_value as v on p.paramID = v.paramID where apiID =#{apiid,jdbcType=INTEGER} order by v.rowNo
+  </select>
+
+  <select id="selectTestCaseIdsByGroupIds" parameterType="java.util.ArrayList" resultType="Integer">
+    select caseid from eo_project_test_case where groupid in 
+    <foreach collection="list" index="index" item="groupIds" open="(" separator="," close=")">
+        #{groupIds, jdbcType=INTEGER}  
+    </foreach>
+  </select>
+
+  <select id="selectEnvInfoByEnvId" parameterType="Integer" resultMap="envResultMap">
+    select * from eo_api_env where envID =#{envid,jdbcType=INTEGER}
+  </select>
+</mapper>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.ProjectMapper">
+  <resultMap id="BaseResultMap" type="com.csc.test.platform.model.Project">
+    <id column="projectID" jdbcType="INTEGER" property="projectid" />
+    <result column="projectType" jdbcType="TINYINT" property="projecttype" />
+    <result column="projectName" jdbcType="VARCHAR" property="projectname" />
+    <result column="projectUpdateTime" jdbcType="TIMESTAMP" property="projectupdatetime" />
+    <result column="projectVersion" jdbcType="VARCHAR" property="projectversion" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    projectID, projectType, projectName, projectUpdateTime, projectVersion
+  </sql>
+  <select id="selectByExample" parameterType="com.csc.test.platform.model.ProjectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from eo_project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eo_project
+    where projectID = #{projectid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eo_project
+    where projectID = #{projectid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.csc.test.platform.model.ProjectExample">
+    delete from eo_project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.csc.test.platform.model.Project">
+    insert into eo_project (projectID, projectType, projectName, 
+      projectUpdateTime, projectVersion)
+    values (#{projectid,jdbcType=INTEGER}, #{projecttype,jdbcType=TINYINT}, #{projectname,jdbcType=VARCHAR}, 
+      #{projectupdatetime,jdbcType=TIMESTAMP}, #{projectversion,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csc.test.platform.model.Project">
+    insert into eo_project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectid != null">
+        projectID,
+      </if>
+      <if test="projecttype != null">
+        projectType,
+      </if>
+      <if test="projectname != null">
+        projectName,
+      </if>
+      <if test="projectupdatetime != null">
+        projectUpdateTime,
+      </if>
+      <if test="projectversion != null">
+        projectVersion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectid != null">
+        #{projectid,jdbcType=INTEGER},
+      </if>
+      <if test="projecttype != null">
+        #{projecttype,jdbcType=TINYINT},
+      </if>
+      <if test="projectname != null">
+        #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="projectupdatetime != null">
+        #{projectupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectversion != null">
+        #{projectversion,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.csc.test.platform.model.ProjectExample" resultType="java.lang.Long">
+    select count(*) from eo_project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update eo_project
+    <set>
+      <if test="record.projectid != null">
+        projectID = #{record.projectid,jdbcType=INTEGER},
+      </if>
+      <if test="record.projecttype != null">
+        projectType = #{record.projecttype,jdbcType=TINYINT},
+      </if>
+      <if test="record.projectname != null">
+        projectName = #{record.projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectupdatetime != null">
+        projectUpdateTime = #{record.projectupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.projectversion != null">
+        projectVersion = #{record.projectversion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update eo_project
+    set projectID = #{record.projectid,jdbcType=INTEGER},
+      projectType = #{record.projecttype,jdbcType=TINYINT},
+      projectName = #{record.projectname,jdbcType=VARCHAR},
+      projectUpdateTime = #{record.projectupdatetime,jdbcType=TIMESTAMP},
+      projectVersion = #{record.projectversion,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csc.test.platform.model.Project">
+    update eo_project
+    <set>
+      <if test="projecttype != null">
+        projectType = #{projecttype,jdbcType=TINYINT},
+      </if>
+      <if test="projectname != null">
+        projectName = #{projectname,jdbcType=VARCHAR},
+      </if>
+      <if test="projectupdatetime != null">
+        projectUpdateTime = #{projectupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectversion != null">
+        projectVersion = #{projectversion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where projectID = #{projectid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csc.test.platform.model.Project">
+    update eo_project
+    set projectType = #{projecttype,jdbcType=TINYINT},
+      projectName = #{projectname,jdbcType=VARCHAR},
+      projectUpdateTime = #{projectupdatetime,jdbcType=TIMESTAMP},
+      projectVersion = #{projectversion,jdbcType=VARCHAR}
+    where projectID = #{projectid,jdbcType=INTEGER}
+  </update>
+</mapper>

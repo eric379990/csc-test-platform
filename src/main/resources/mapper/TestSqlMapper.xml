@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.TestSqlMapper">
+  <resultMap id="BaseResultMap" type="com.csc.test.platform.model.TestSql">
+    <id column="sqlID" jdbcType="INTEGER" property="sqlid" />
+    <result column="comments" jdbcType="VARCHAR" property="comments" />
+    <result column="scriptType" jdbcType="TINYINT" property="scripttype" />
+    <result column="dbID" jdbcType="INTEGER" property="dbid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.csc.test.platform.model.TestSql">
+    <result column="script" jdbcType="LONGVARCHAR" property="script" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sqlID, comments, scriptType, dbID
+  </sql>
+  <sql id="Blob_Column_List">
+    script
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.csc.test.platform.model.TestSqlExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_project_test_sql
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.csc.test.platform.model.TestSqlExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from eo_project_test_sql
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_project_test_sql
+    where sqlID = #{sqlid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eo_project_test_sql
+    where sqlID = #{sqlid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.csc.test.platform.model.TestSqlExample">
+    delete from eo_project_test_sql
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.csc.test.platform.model.TestSql">
+    insert into eo_project_test_sql (sqlID, comments, scriptType, 
+      dbID, script)
+    values (#{sqlid,jdbcType=INTEGER}, #{comments,jdbcType=VARCHAR}, #{scripttype,jdbcType=TINYINT}, 
+      #{dbid,jdbcType=INTEGER}, #{script,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csc.test.platform.model.TestSql">
+    insert into eo_project_test_sql
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sqlid != null">
+        sqlID,
+      </if>
+      <if test="comments != null">
+        comments,
+      </if>
+      <if test="scripttype != null">
+        scriptType,
+      </if>
+      <if test="dbid != null">
+        dbID,
+      </if>
+      <if test="script != null">
+        script,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sqlid != null">
+        #{sqlid,jdbcType=INTEGER},
+      </if>
+      <if test="comments != null">
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="scripttype != null">
+        #{scripttype,jdbcType=TINYINT},
+      </if>
+      <if test="dbid != null">
+        #{dbid,jdbcType=INTEGER},
+      </if>
+      <if test="script != null">
+        #{script,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.csc.test.platform.model.TestSqlExample" resultType="java.lang.Long">
+    select count(*) from eo_project_test_sql
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update eo_project_test_sql
+    <set>
+      <if test="record.sqlid != null">
+        sqlID = #{record.sqlid,jdbcType=INTEGER},
+      </if>
+      <if test="record.comments != null">
+        comments = #{record.comments,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scripttype != null">
+        scriptType = #{record.scripttype,jdbcType=TINYINT},
+      </if>
+      <if test="record.dbid != null">
+        dbID = #{record.dbid,jdbcType=INTEGER},
+      </if>
+      <if test="record.script != null">
+        script = #{record.script,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update eo_project_test_sql
+    set sqlID = #{record.sqlid,jdbcType=INTEGER},
+      comments = #{record.comments,jdbcType=VARCHAR},
+      scriptType = #{record.scripttype,jdbcType=TINYINT},
+      dbID = #{record.dbid,jdbcType=INTEGER},
+      script = #{record.script,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update eo_project_test_sql
+    set sqlID = #{record.sqlid,jdbcType=INTEGER},
+      comments = #{record.comments,jdbcType=VARCHAR},
+      scriptType = #{record.scripttype,jdbcType=TINYINT},
+      dbID = #{record.dbid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csc.test.platform.model.TestSql">
+    update eo_project_test_sql
+    <set>
+      <if test="comments != null">
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="scripttype != null">
+        scriptType = #{scripttype,jdbcType=TINYINT},
+      </if>
+      <if test="dbid != null">
+        dbID = #{dbid,jdbcType=INTEGER},
+      </if>
+      <if test="script != null">
+        script = #{script,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where sqlID = #{sqlid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csc.test.platform.model.TestSql">
+    update eo_project_test_sql
+    set comments = #{comments,jdbcType=VARCHAR},
+      scriptType = #{scripttype,jdbcType=TINYINT},
+      dbID = #{dbid,jdbcType=INTEGER},
+      script = #{script,jdbcType=LONGVARCHAR}
+    where sqlID = #{sqlid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csc.test.platform.model.TestSql">
+    update eo_project_test_sql
+    set comments = #{comments,jdbcType=VARCHAR},
+      scriptType = #{scripttype,jdbcType=TINYINT},
+      dbID = #{dbid,jdbcType=INTEGER}
+    where sqlID = #{sqlid,jdbcType=INTEGER}
+  </update>
+</mapper>

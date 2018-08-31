@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.csc.test.platform.dao.ApiRequestValueMapper">
+  <resultMap id="BaseResultMap" type="com.csc.test.platform.model.ApiRequestValue">
+    <id column="valueID" jdbcType="INTEGER" property="valueid" />
+    <result column="valueDescription" jdbcType="VARCHAR" property="valuedescription" />
+    <result column="paramID" jdbcType="INTEGER" property="paramid" />
+    <result column="rowNo" jdbcType="INTEGER" property="rowno" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.csc.test.platform.model.ApiRequestValue">
+    <result column="value" jdbcType="LONGVARCHAR" property="value" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    valueID, valueDescription, paramID, rowNo
+  </sql>
+  <sql id="Blob_Column_List">
+    value
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.csc.test.platform.model.ApiRequestValueExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_api_request_value
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.csc.test.platform.model.ApiRequestValueExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from eo_api_request_value
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eo_api_request_value
+    where valueID = #{valueid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eo_api_request_value
+    where valueID = #{valueid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.csc.test.platform.model.ApiRequestValueExample">
+    delete from eo_api_request_value
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.csc.test.platform.model.ApiRequestValue">
+    insert into eo_api_request_value (valueID, valueDescription, paramID, 
+      rowNo, value)
+    values (#{valueid,jdbcType=INTEGER}, #{valuedescription,jdbcType=VARCHAR}, #{paramid,jdbcType=INTEGER}, 
+      #{rowno,jdbcType=INTEGER}, #{value,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.csc.test.platform.model.ApiRequestValue">
+    insert into eo_api_request_value
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="valueid != null">
+        valueID,
+      </if>
+      <if test="valuedescription != null">
+        valueDescription,
+      </if>
+      <if test="paramid != null">
+        paramID,
+      </if>
+      <if test="rowno != null">
+        rowNo,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="valueid != null">
+        #{valueid,jdbcType=INTEGER},
+      </if>
+      <if test="valuedescription != null">
+        #{valuedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="paramid != null">
+        #{paramid,jdbcType=INTEGER},
+      </if>
+      <if test="rowno != null">
+        #{rowno,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.csc.test.platform.model.ApiRequestValueExample" resultType="java.lang.Long">
+    select count(*) from eo_api_request_value
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update eo_api_request_value
+    <set>
+      <if test="record.valueid != null">
+        valueID = #{record.valueid,jdbcType=INTEGER},
+      </if>
+      <if test="record.valuedescription != null">
+        valueDescription = #{record.valuedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramid != null">
+        paramID = #{record.paramid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rowno != null">
+        rowNo = #{record.rowno,jdbcType=INTEGER},
+      </if>
+      <if test="record.value != null">
+        value = #{record.value,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update eo_api_request_value
+    set valueID = #{record.valueid,jdbcType=INTEGER},
+      valueDescription = #{record.valuedescription,jdbcType=VARCHAR},
+      paramID = #{record.paramid,jdbcType=INTEGER},
+      rowNo = #{record.rowno,jdbcType=INTEGER},
+      value = #{record.value,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update eo_api_request_value
+    set valueID = #{record.valueid,jdbcType=INTEGER},
+      valueDescription = #{record.valuedescription,jdbcType=VARCHAR},
+      paramID = #{record.paramid,jdbcType=INTEGER},
+      rowNo = #{record.rowno,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.csc.test.platform.model.ApiRequestValue">
+    update eo_api_request_value
+    <set>
+      <if test="valuedescription != null">
+        valueDescription = #{valuedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="paramid != null">
+        paramID = #{paramid,jdbcType=INTEGER},
+      </if>
+      <if test="rowno != null">
+        rowNo = #{rowno,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where valueID = #{valueid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.csc.test.platform.model.ApiRequestValue">
+    update eo_api_request_value
+    set valueDescription = #{valuedescription,jdbcType=VARCHAR},
+      paramID = #{paramid,jdbcType=INTEGER},
+      rowNo = #{rowno,jdbcType=INTEGER},
+      value = #{value,jdbcType=LONGVARCHAR}
+    where valueID = #{valueid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.csc.test.platform.model.ApiRequestValue">
+    update eo_api_request_value
+    set valueDescription = #{valuedescription,jdbcType=VARCHAR},
+      paramID = #{paramid,jdbcType=INTEGER},
+      rowNo = #{rowno,jdbcType=INTEGER}
+    where valueID = #{valueid,jdbcType=INTEGER}
+  </update>
+</mapper>
